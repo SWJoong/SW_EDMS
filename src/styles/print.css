@@ -1,0 +1,47 @@
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .sidebar,
+  .header-nav,
+  .no-print,
+  .modal-header,
+  .modal-footer,
+  .btn {
+    display: none !important;
+  }
+
+  .app-container,
+  .main-content,
+  .content-body,
+  .modal-overlay,
+  .modal-content {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    background: #ffffff !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .doc-paper {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 10mm 15mm !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+}
