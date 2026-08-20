@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:security": "node --experimental-strip-types --import ./docs/security/hook.mjs docs/security/pentest.mts"
   },
   "dependencies": {
     "lucide-react": "^1.27.0",

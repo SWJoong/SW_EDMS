@@ -7,7 +7,10 @@ import {
   getCurrentUser,
   setCurrentUserId,
   initStorage,
+  isIntroHidden,
+  setIntroHidden,
 } from './services/storage';
+import { IntroScreen } from './components/intro/IntroScreen';
 import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/Sidebar';
 import type { ActiveTab } from './components/layout/Sidebar';
@@ -33,6 +36,8 @@ export function App() {
   const [initialDocCategory, setInitialDocCategory] = useState<DocumentCategory>('LEAVE');
   const [isStampModalOpen, setIsStampModalOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  // 접속 시 첫 화면: 보안 안내. '다음부터 표시 안 함'을 선택하지 않았다면 매 접속마다 표시.
+  const [showIntro, setShowIntro] = useState(() => !isIntroHidden());
 
   useEffect(() => {
     initStorage();
@@ -90,6 +95,13 @@ export function App() {
 
   return (
     <div className="app-container">
+      {showIntro && (
+        <IntroScreen
+          onClose={() => setShowIntro(false)}
+          onDontShowAgain={() => setIntroHidden(true)}
+        />
+      )}
+
       <Sidebar
         activeTab={activeTab}
         setActiveTab={(tab) => {
@@ -111,6 +123,7 @@ export function App() {
           darkMode={darkMode}
           onToggleDarkMode={handleToggleDarkMode}
           onOpenStampModal={() => setIsStampModalOpen(true)}
+          onOpenIntro={() => setShowIntro(true)}
         />
 
         <main className="content-body">
