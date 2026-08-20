@@ -23,13 +23,11 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <header className="header-nav no-print" style={{
-      height: '64px',
       backgroundColor: 'var(--bg-card)',
       borderBottom: '1px solid var(--border-color)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '0 2rem',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         <div style={{
@@ -46,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
           <h1 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)' }}>
             사회복지 E-HR 전자결재 시스템
           </h1>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+          <p className="header-subtitle" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
             기관 규모 5~50인 수직적 결재 & 행정 서식 관리
           </p>
         </div>

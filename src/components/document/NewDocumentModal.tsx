@@ -206,7 +206,7 @@ export const NewDocumentModal: React.FC<NewDocumentModalProps> = ({
         <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div>
             <label className="form-label">1. 행정 서식 종류 선택 (7대 필수 서식)</label>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem' }}>
+            <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem' }}>
               {[
                 { id: 'LEAVE', name: '1. 연차사용신청' },
                 { id: 'WORK_STATUS_2', name: '2. 근무상황부(2)' },

@@ -69,7 +69,7 @@ export const EducationReportForm: React.FC<EducationReportFormProps> = ({
         </select>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">이수한 교육명 *</label>
           <input

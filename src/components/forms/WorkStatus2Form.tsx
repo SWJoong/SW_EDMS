@@ -39,7 +39,7 @@ export const WorkStatus2Form: React.FC<WorkStatus2FormProps> = ({ formData, onCh
         <span><strong>근무상황부(2) 안내:</strong> 공가, 병가, 경조사, 모성보호 등 특수 상황 휴가는 관련 증빙서류(진단서, 참석확인증 등)를 첨부해야 합니다.</span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">근무상황 구분 (휴가 종류) *</label>
           <select
@@ -82,7 +82,7 @@ export const WorkStatus2Form: React.FC<WorkStatus2FormProps> = ({ formData, onCh
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">시작일 *</label>
           <input

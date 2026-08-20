@@ -86,7 +86,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.25rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.25rem' }}>
         <div
           className="card"
           style={{ cursor: 'pointer', margin: 0 }}
@@ -175,7 +175,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
         <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1rem' }}>
           7대 필수 행정 서식 빠른 기안
         </h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+        <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
           <button
             className="btn btn-secondary"
             onClick={() => onStartNewDocument('LEAVE')}

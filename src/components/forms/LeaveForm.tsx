@@ -50,7 +50,7 @@ export const LeaveForm: React.FC<LeaveFormProps> = ({ formData, onChange }) => {
         </span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">휴가구분 *</label>
           <select
@@ -77,7 +77,7 @@ export const LeaveForm: React.FC<LeaveFormProps> = ({ formData, onChange }) => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">휴가 시작일 *</label>
           <input

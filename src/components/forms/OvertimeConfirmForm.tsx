@@ -83,7 +83,7 @@ export const OvertimeConfirmForm: React.FC<OvertimeConfirmFormProps> = ({
         </select>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">실제 근무일 *</label>
           <input

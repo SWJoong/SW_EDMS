@@ -43,7 +43,7 @@ export const OvertimeOrderForm: React.FC<OvertimeOrderFormProps> = ({ formData, 
         <span><strong>시간외근무 사전명령 안내:</strong> 근로기준법 및 기관 규정에 의거하여 시간외근무 시행 1일 전 사전 승인을 완료해야 합니다.</span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">시간외근무 예정일 *</label>
           <input

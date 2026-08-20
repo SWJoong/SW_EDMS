@@ -59,12 +59,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside className="sidebar no-print" style={{
-      width: '260px',
       backgroundColor: 'var(--bg-sidebar)',
       color: '#cbd5e1',
       display: 'flex',
       flexDirection: 'column',
-      padding: '1.25rem 1rem',
     }}>
       <div style={{
         backgroundColor: 'rgba(255, 255, 255, 0.05)',
@@ -73,10 +71,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         marginBottom: '1.5rem',
         border: '1px solid rgba(255, 255, 255, 0.1)',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div className="sidebar-profile-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
             width: '40px',
             height: '40px',
+            flexShrink: 0,
             borderRadius: '50%',
             backgroundColor: 'var(--primary)',
             color: '#fff',
@@ -88,7 +87,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           }}>
             {currentUser.name.slice(0, 1)}
           </div>
-          <div style={{ flex: 1, overflow: 'hidden' }}>
+          <div className="sidebar-profile-detail" style={{ flex: 1, overflow: 'hidden' }}>
             <div style={{ color: '#fff', fontWeight: 600, fontSize: '0.95rem' }}>
               {currentUser.name} {currentUser.jobTitle}
             </div>
@@ -97,7 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </div>
         </div>
-        <div style={{
+        <div className="sidebar-role-badge" style={{
           marginTop: '0.75rem',
           display: 'inline-flex',
           alignItems: 'center',
@@ -145,7 +144,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <Icon size={18} />
-                <span>{item.label}</span>
+                <span className="sidebar-label">{item.label}</span>
               </div>
               {item.badge !== undefined && item.badge > 0 && (
                 <span style={{
@@ -164,7 +163,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         })}
       </nav>
 
-      <div style={{
+      <div className="sidebar-footer" style={{
         fontSize: '0.75rem',
         color: '#64748b',
         borderTop: '1px solid rgba(255, 255, 255, 0.1)',

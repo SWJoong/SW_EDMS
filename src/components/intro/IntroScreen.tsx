@@ -86,7 +86,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onClose, onDontShowAga
         {/* ③ 목업 ↔ 실제 운영 주의사항 */}
         <div style={card}>
           <h2 style={h2}>🧪 목업 ↔ 실제 운영 주의사항</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.9rem' }}>
+          <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.9rem' }}>
             <div style={{ backgroundColor: 'var(--bg-main)', borderRadius: 'var(--radius-sm)', padding: '0.8rem 0.9rem', border: '1px solid var(--border-color)' }}>
               <div style={{ fontWeight: 800, fontSize: '0.85rem', color: 'var(--status-pending)', marginBottom: '0.4rem' }}>지금(목업) — 이렇게 동작합니다</div>
               <ul style={{ margin: 0, paddingLeft: '1.1rem' }}>

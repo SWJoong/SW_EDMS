@@ -67,7 +67,7 @@ export const ApprovalLineEditor: React.FC<ApprovalLineEditorProps> = ({
         결재선 지정 (수직적 2단계 결재)
       </h3>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
         <div style={{ padding: '0.75rem', backgroundColor: 'var(--bg-card)', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
           <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>1. 기안자 (신청)</div>
           <div style={{ fontSize: '0.9rem', fontWeight: 700, marginTop: '0.25rem' }}>

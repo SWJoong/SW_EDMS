@@ -79,11 +79,83 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  min-width: 0; /* flex item이 내용물 때문에 넘치지 않도록 */
 }
 
 .content-body {
   padding: 2rem;
   flex: 1;
+}
+
+/* 사이드바: 데스크톱은 260px 전체 표시, 좁은 화면은 아이콘 레일로 축소 */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  padding: 1.25rem 1rem;
+}
+
+/* 상단 헤더: 좁은 화면에서 줄바꿈 허용(잘림 방지) */
+.header-nav {
+  height: 64px;
+  padding: 0 2rem;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+}
+
+/* 그리드 반응형 유틸리티: 데스크톱 열 비율(인라인 style)은 그대로 두고,
+   좁은 화면에서만 열 수를 줄인다. 인라인 style을 재정의하려면 !important가 유일한 방법이다. */
+.responsive-grid {
+  min-width: 0;
+}
+.responsive-grid > * {
+  min-width: 0; /* 그리드 자식의 콘텐츠(긴 텍스트 등)로 인한 트랙 확장 방지 */
+}
+
+@media (max-width: 1024px) {
+  .content-body {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 76px;
+    padding: 1.25rem 0.5rem;
+  }
+  .sidebar-profile-row {
+    justify-content: center;
+  }
+  .sidebar-profile-detail,
+  .sidebar-role-badge,
+  .sidebar-label,
+  .sidebar-footer {
+    display: none;
+  }
+
+  .header-nav {
+    height: auto;
+    min-height: 64px;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .responsive-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .content-body {
+    padding: 1rem;
+  }
+  .header-nav {
+    padding: 0.75rem 1rem;
+  }
+  .header-subtitle {
+    display: none;
+  }
+  .responsive-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 /* Common UI Components */

@@ -27,7 +27,7 @@ export const BusinessTripForm: React.FC<BusinessTripFormProps> = ({ formData, on
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">출장 구분 *</label>
           <select
@@ -68,7 +68,7 @@ export const BusinessTripForm: React.FC<BusinessTripFormProps> = ({ formData, on
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">출장 시작일 *</label>
           <input
@@ -104,7 +104,7 @@ export const BusinessTripForm: React.FC<BusinessTripFormProps> = ({ formData, on
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">예상 여비 (원) *</label>
           <input

@@ -73,7 +73,7 @@ export const OrgTree: React.FC<OrgTreeProps> = ({ ous, users, onRefreshData }) =
       </div>
 
       {activeTab === 'ous' ? (
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
+        <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
           <div className="card">
             <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Network size={20} style={{ color: 'var(--primary)' }} />

@@ -29,7 +29,7 @@ export const EducationApplyForm: React.FC<EducationApplyFormProps> = ({ formData
         <span><strong>직무 교육 신청 안내:</strong> 사회복지사 보수교육, 외부 전문 직무교육, 인권 및 안전 의무교육 참가 신청서입니다.</span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">교육명 (과정명) *</label>
           <input
@@ -56,7 +56,7 @@ export const EducationApplyForm: React.FC<EducationApplyFormProps> = ({ formData
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '1rem' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">교육 주관 기관 *</label>
           <input
