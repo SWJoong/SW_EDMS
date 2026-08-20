@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# 환경변수/비밀키 — 절대 커밋 금지 (service_role 키, Supabase URL 등)
+# 프런트에는 anon 키만 사용하고, 그 anon 키조차 .env 로 관리해 커밋하지 않는다.
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

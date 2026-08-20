@@ -1,0 +1,85 @@
+name: security-guard
+
+# 목적: "프런트에 절대 실리면 안 되는 비밀키"와 "실수로 커밋된 .env" 를 CI 에서 차단한다.
+#       특히 Supabase service_role 키가 VITE_* 번들에 들어가는 사고(README/SECURITY.md 참고)를 막는다.
+on:
+  push:
+  pull_request:
+
+jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1) service_role 키 / 서버 전용 비밀키가 프런트 소스에 하드코딩됐는지 스캔.
+      #    (실제 .env 파일은 step 2[JWT]·step 3[커밋 존재]가 커버하므로 여기선 코드/설정만 본다.
+      #     문서·이 워크플로 자신은 제외 — 오탐 방지)
+      - name: Scan source for forbidden secrets
+        run: |
+          set -eo pipefail
+          echo "🔎 소스에서 금지 패턴 스캔..."
+          if grep -RInE \
+               'service_role|SUPABASE_SERVICE_ROLE|VITE_[A-Z_]*SERVICE_ROLE|VITE_[A-Z_]*SECRET|VITE_[A-Z_]*PRIVATE' \
+               --include='*.ts' --include='*.tsx' --include='*.js' --include='*.jsx' \
+               --include='*.html' --include='*.json' \
+               --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=docs --exclude-dir=dist . ; then
+            echo "::error::service_role/비밀키 패턴이 소스에 있습니다. 프런트 번들에서 즉시 제거하세요."
+            exit 1
+          fi
+          echo "✅ 금지 패턴 없음."
+
+      # 2) service_role 형태의 Supabase JWT(payload 에 "service_role")가 커밋됐는지 스캔.
+      #    이 워크플로 파일 자신이 탐지 문자열을 포함하므로 제외한다.
+      - name: Scan for service_role JWT payloads
+        run: |
+          set -eo pipefail
+          if grep -RIn 'InNlcnZpY2Vfcm9sZSI' \
+               --exclude='security-guard.yml' \
+               --exclude-dir=node_modules --exclude-dir=.git . ; then
+            echo "::error::service_role JWT 로 보이는 문자열이 커밋되어 있습니다. 키를 즉시 폐기(rotate)하세요."
+            exit 1
+          fi
+          echo "✅ service_role JWT 흔적 없음."
+
+      # 3) .env(실값) 가 실수로 커밋됐는지 확인 (.env.example 만 허용).
+      - name: Ensure no committed .env
+        run: |
+          set -eo pipefail
+          if git ls-files | grep -E '(^|/)\.env($|\.)' | grep -vE '\.env\.example$' ; then
+            echo "::error::실제 .env 파일이 커밋되어 있습니다. git rm --cached 후 키를 폐기(rotate)하세요."
+            exit 1
+          fi
+          echo "✅ 커밋된 .env 없음."
+
+  build-and-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22          # --experimental-strip-types (test:security) 요구
+          cache: npm
+      - run: npm ci
+
+      # 타입체크 + 빌드가 통과해야 한다(무결성 로직이 든 코드가 깨진 채 배포되지 않도록).
+      - name: Typecheck & build
+        run: npm run build
+
+      # 보안 회귀 테스트(XSS/무결성/불변성/프로토타입오염/신원위조) — 실제 소스 구동.
+      - name: Security regression tests
+        run: npm run test:security
+
+      # 4) 번들 산출물(dist)에 비밀키가 새어 나갔는지 최종 확인.
+      - name: Scan built bundle for secrets
+        run: |
+          set -eo pipefail
+          if grep -RIE 'service_role|InNlcnZpY2Vfcm9sZSI' dist ; then
+            echo "::error::빌드 번들(dist)에 service_role 키가 포함됐습니다. 배포 금지."
+            exit 1
+          fi
+          echo "✅ 번들에 비밀키 없음."
+
+      # 5) 프런트로 실제 배포되는(=production) 의존성의 알려진 취약점 확인.
+      - name: npm audit (production deps)
+        run: npm audit --omit=dev --audit-level=high

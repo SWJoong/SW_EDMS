@@ -7,10 +7,10 @@
 ## 1. 🐙 GitHub Repository 생성 및 소스코드 등록
 
 ### Step 1: Git 초기화 및 커밋
-로컬 프로젝트 루트(`/root/SW_EDMS`)에서 다음 명령어를 실행합니다.
+로컬 프로젝트 루트에서 다음 명령어를 실행합니다.
 
 ```bash
-cd /root/SW_EDMS
+cd <프로젝트_경로>/SW_EDMS
 
 # git 초기화
 git init
@@ -46,13 +46,19 @@ git push -u origin main
 ### 카카오 맵 API 키 발급 및 적용 방법
 1. [카카오 개발자 센터](https://developers.kakao.com/)에 접속하여 애플리케이션을 등록합니다.
 2. **플랫폼 설정 ➔ Web 플랫폼**에 배포 도메인(예: `https://sw-edms.vercel.app`)을 추가합니다.
+   > 🔐 **도메인 화이트리스트는 필수입니다.** JavaScript 키는 브라우저에 노출되므로,
+   > 등록 도메인을 제한하지 않으면 제3자가 키를 도용해 카카오 API 비용을 발생시킬 수 있습니다.
 3. **앱 키 ➔ JavaScript 키**를 복사합니다.
-4. `.env` 환경 변수 파일 또는 `index.html` 상단에 SDK 스크립트를 추가합니다:
+4. 키는 `index.html` 에 하드코딩하지 말고 **환경변수(`VITE_KAKAO_JS_KEY`)** 로 주입하세요.
+   `.env.example` 을 복사해 `.env` 를 만들고(커밋 금지), 앱에서 동적으로 SDK 를 로드합니다.
 
-```html
-<!-- index.html <head> 내부 -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_JAVASCRIPT_KEY&libraries=services"></script>
+```bash
+# .env  (❌ 커밋하지 마세요 — .gitignore 에 이미 제외되어 있습니다)
+VITE_KAKAO_JS_KEY=발급받은_JavaScript_키
 ```
+
+> ℹ️ JavaScript 키는 태생적으로 공개 값이라 노출 자체는 정상입니다. 보호는 "숨기기"가 아니라
+> **도메인 제한**으로 합니다. 반면 Supabase `service_role` 키처럼 서버 전용 비밀키는 절대 프런트에 넣지 마세요.
 
 ---
 
@@ -62,13 +68,26 @@ git push -u origin main
 
 ### Supabase DB 전환 방법
 1. [Supabase Console](https://supabase.com)에서 프로젝트를 생성합니다.
-2. **SQL Editor** 탭으로 이동하여 `docs/supabase_schema.sql` 파일의 전체 SQL 스크립트를 복사 후 실행(Run)합니다.
-3. `.env` 파일에 Supabase 접속 정보를 등록합니다:
+2. **SQL Editor** 탭으로 이동하여 `docs/supabase_schema.sql`(무결성 강화본) 전체를 복사 후 실행(Run)합니다.
+   - 이 스크립트는 RLS 활성화, 직접 DML 회수(REVOKE), append-only 트리거, 해시체인, 접속기록을 포함합니다.
+   - 실행 후 **Authentication → Policies** 에서 RLS 가 모든 테이블에 켜져 있는지 확인하세요.
+3. `.env` 파일에 접속 정보를 등록합니다. **반드시 anon 키만** 사용합니다.
 
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_SUPABASE_ANON_KEY=your-anon-key      # ✅ anon(공개) 키만
+# VITE_SUPABASE_SERVICE_ROLE=...          # ❌ 절대 금지: 프런트 번들에 실리면 RLS 무력화
 ```
+
+> 🚨 **`service_role` 키를 `VITE_*` 로 넣지 마세요.** 이 키는 RLS 를 우회하는 마스터 키라,
+> 프런트에 실리면 누구나 전 직원 결재·개인정보를 열람·삭제할 수 있습니다. 서버 전용(Edge Function)으로만 쓰고,
+> `.github/workflows/security-guard.yml` 가 이 사고를 CI 에서 차단합니다.
+
+### Storage(도장 이미지) 보안 설정 — 필수
+1. 도장 버킷을 **Private** 으로 생성합니다(Public URL 금지 — 미인증 도장 수집 방지).
+2. 접근은 **Signed URL** 또는 RLS 기반 정책으로만 허용합니다.
+3. 파일 경로를 **콘텐츠 해시 기반**(예: `stamps/<sha256>.png`)으로 두어, 같은 경로 덮어쓰기로
+   과거 결재 도장이 바뀌는 일을 방지합니다. (스키마 `users.stamp_path` / `stamp_sha256` 참고)
 
 ---
 
@@ -90,6 +109,31 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
    - **Build command**: `npm run build`
    - **Publish directory**: `dist`
 4. **Deploy site** 클릭 ➔ 배포 완료!
+
+---
+
+## 5. 🛡️ 배포 보안 헤더 (권장)
+
+정적 호스팅에도 기본 보안 헤더를 설정하세요. Vercel 예시(`vercel.json`):
+
+```json
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
+      ]
+    }
+  ]
+}
+```
+
+> 민감정보(건강 등)를 다루는 화면이 있다면 CSP(Content-Security-Policy)와 접속기록(`access_logs`)을
+> 함께 적용하고, **조회·인쇄·내보내기 시 `log_access()` 를 호출**하도록 프런트를 연동하세요.
 
 ---
 
