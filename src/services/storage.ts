@@ -26,7 +26,18 @@ const STORAGE_KEYS = {
   DOC_SEQ: 'sw_edms_doc_seq',
   // [보완 3] append-only 이벤트 로그(데모). 실제 무결성은 DB 해시체인이 담당.
   EVENTS: 'sw_edms_events',
+  // 접속 시 첫 화면(보안 안내) 자동 표시 여부. '1' 이면 자동 표시 안 함.
+  INTRO_HIDDEN: 'sw_edms_intro_hidden',
 };
+
+// 접속 시 보안 안내 첫 화면 자동 표시 여부.
+export function isIntroHidden(): boolean {
+  return localStorage.getItem(STORAGE_KEYS.INTRO_HIDDEN) === '1';
+}
+export function setIntroHidden(hidden: boolean): void {
+  if (hidden) localStorage.setItem(STORAGE_KEYS.INTRO_HIDDEN, '1');
+  else localStorage.removeItem(STORAGE_KEYS.INTRO_HIDDEN);
+}
 
 // [보완 3] 결재 이벤트 타입 — 상신/승인/반려/회수/폐기를 "상태값"이 아니라 "쌓이는 기록"으로.
 export interface ApprovalEvent {

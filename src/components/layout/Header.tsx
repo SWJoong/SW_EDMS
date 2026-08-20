@@ -1,6 +1,6 @@
 import React from 'react';
 import type { User } from '../../types/approval';
-import { UserCheck, Moon, Sun, Stamp, FileText } from 'lucide-react';
+import { UserCheck, Moon, Sun, Stamp, FileText, ShieldAlert } from 'lucide-react';
 
 interface HeaderProps {
   currentUser: User;
@@ -9,6 +9,7 @@ interface HeaderProps {
   darkMode: boolean;
   onToggleDarkMode: () => void;
   onOpenStampModal: () => void;
+  onOpenIntro: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -18,6 +19,7 @@ export const Header: React.FC<HeaderProps> = ({
   darkMode,
   onToggleDarkMode,
   onOpenStampModal,
+  onOpenIntro,
 }) => {
   return (
     <header className="header-nav no-print" style={{
@@ -51,6 +53,16 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <button
+          onClick={onOpenIntro}
+          className="btn btn-secondary btn-sm"
+          title="시스템 소개 및 보안 안내 다시 보기"
+          style={{ color: 'var(--status-rejected)', borderColor: 'var(--status-rejected)' }}
+        >
+          <ShieldAlert size={16} />
+          <span>보안 안내</span>
+        </button>
+
         <button
           onClick={onOpenStampModal}
           className="btn btn-secondary btn-sm"
